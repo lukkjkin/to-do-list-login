@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Plataforma dos Amantes</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #ffebeb;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        canvas {
+            border: 2px solid #ff4d4d;
+            background-color: #ffe0e0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas"></canvas>
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = 800;
+        canvas.height = 600;
+
+        const gravity = 0.8;
+        const friction = 0.9;
+
+        let score = 0;
+        let gameOver = false;
+
+        class Character {
+            constructor(x, y, width, height, color) {
+                this.x = x;
+                this.y = y;
+                this.width = width;
+                this.height = height;
+                this.color = color;
+                this.velocityX = 0;
+                this.velocityY = 0;
+                this.speed = 5;
+                this.jumping = false;
+            }
+
+            move() {
+                if (keys.left) {
+                    this.velocityX = -this.speed;
+                } else if (keys.right) {
+                    this.velocityX = this.speed;
+                } else {
+                    this.velocityX = 0;
+                }
+
+                if (this.jumping) {
+                    this.velocityY += gravity;
+                }
+
+                this.x += this.velocityX;
+                this.y += this.velocityY;
+
+                if (this.x < 0) {
+                    this.x = 0;
+                } else if (this.x + this.width > canvas.width) {
+                    this.x = canvas.width - this.width;
+                }
+
+                if (this.y + this.height > canvas.height) {
+                    this.y = canvas.height - this.height;
+                    this.velocityY = 0;
+                    this.jumping = false;
+                }
+
+                this.velocityX *= friction;
+                this.velocityY *= friction;
+            }
+
+            jump() {
+                if (!this.jumping) {
+                    this.velocityY = -15;
+                    this.jumping = true;
+                }
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
+        }
+
+        class Heart {
+            constructor(x, y, size) {
+                this.x = x;
+                this.y = y;
+                this.size = size;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctx.fillStyle = "#ff4d4d";
+                ctx.fill();
+                ctx.closePath();
+            }
+        }
+
+        class Platform {
+            constructor(x, y, width, height) {
+                this.x = x;
+                this.y = y;
+                this.width = width;
+                this.height = height;
+            }
+
+            draw() {
+                ctx.fillStyle = "#ff66b2";
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
+        }
+
+        const player = new Character(100, canvas.height - 100, 50, 50, "#ff4d4d");
+        const platforms = [
+            new Platform(0, canvas.height - 50, canvas.width, 50),
+            new Platform(150, canvas.height - 150, 200, 20),
+            new Platform(400, canvas.height - 250, 200, 20),
+            new Platform(650, canvas.height - 350, 200, 20)
+        ];
+
+        const hearts = [
+            new Heart(200, canvas.height - 200, 15),
+            new Heart(450, canvas.height - 300, 15),
+            new Heart(700, canvas.height - 400, 15)
+        ];
+
+        const keys = {
+            left: false,
+            right: false,
+            space: false
+        };
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowLeft" || e.key === "a") keys.left = true;
+            if (e.key === "ArrowRight" || e.key === "d") keys.right = true;
+            if (e.key === " " || e.key === "ArrowUp") keys.space = true;
+        });
+
+        document.addEventListener("keyup", (e) => {
+            if (e.key === "ArrowLeft" || e.key === "a") keys.left = false;
+            if (e.key === "ArrowRight" || e.key === "d") keys.right = false;
+            if (e.key === " " || e.key === "ArrowUp") keys.space = false;
+        });
+
+        function detectCollisions() {
+            // Verifica colisão com plataformas
+            for (let i = 0; i < platforms.length; i++) {
+                const p = platforms[i];
+                if (
+                    player.x + player.width > p.x &&
+                    player.x < p.x + p.width &&
+                    player.y + player.height <= p.y + player.velocityY &&
+                    player.y + player.height + player.velocityY >= p.y
+                ) {
+                    player.y = p.y - player.height;
+                    player.velocityY = 0;
+                    player.jumping = false;
+                }
+            }
+
+            // Verifica colisão com corações
+            for (let i = 0; i < hearts.length; i++) {
+                const h = hearts[i];
+                const dist = Math.sqrt(
+                    Math.pow(player.x - h.x, 2) + Math.pow(player.y - h.y, 2)
+                );
+                if (dist < player.width / 2 + h.size) {
+                    hearts.splice(i, 1);
+                    score++;
+                    break;
+                }
+            }
+        }
+
+        function gameLoop() {
+            if (gameOver) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "#ff4d4d";
+                ctx.font = "30px Arial";
+                ctx.fillText("Game Over! Pontuação: " + score, 300, 300);
+                return;
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            player.move();
+            player.draw();
+
+            platforms.forEach(platform => platform.draw());
+            hearts.forEach(heart => heart.draw());
+
+            detectCollisions();
+
+            if (hearts.length === 0) {
+                gameOver = true;
+            }
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        gameLoop();
+
+        // Inicia o pulo
+        document.addEventListener("keydown", (e) => {
+            if (e.key === " " && !player.jumping) {
+                player.jump();
+            }
+        });
+    </script>
+</body>
+</html>

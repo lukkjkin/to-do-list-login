@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Meu Amor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300&family=Playfair+Display:ital,wght@1,900&display=swap" rel="stylesheet">
+    <style>
+        body{
+            background-color:indigo;
+            background-image: url(https://i.pinimg.com/736x/4a/49/a8/4a49a88a0707f2b813c7a1c4f7f33827.jpg);
+            font-family:"Oswald";
+            
+        }
+
+        .painel{
+            margin: auto;
+            margin-top: 90px;
+            background-color: rgb(253, 254, 252);
+            width: 500px;
+            height: 530px;
+            border-radius: 20px;
+            font-family:"Oswald";
+            padding-top: 30px;
+            
+        }
+        #sim{
+            font-family:"Oswald";
+            height: 40px;
+            width: 60px;
+            border:solid blueviolet;
+            background-color:blueviolet;
+            border-radius: 10px;
+            color:white;
+            margin-left: 165px;
+            cursor: pointer;
+
+        }
+        #nao{
+            font-family:"Oswald";
+            position: absolute;
+            height: 40px;
+            width: 60px;
+            border:solid blueviolet;
+            background-color:blueviolet;
+            border-radius: 10px;
+            color:white;
+            margin-left: 50px;
+           
+        }
+        
+    
+        img{
+            margin-top:10px ;
+            margin-left: 65px;
+            margin-right: 65px;
+            margin-bottom: auto;
+        }
+        h1,h2{
+            text-align: center;
+            margin-top: 5px;
+          
+        }
+
+    </style>
+</head>
+<body>
+     <h1></h1>
+
+    <div class="painel"> 
+        
+        <h1>Parabéns meu amor</h1>
+   
+
+        
+
+
+        <img src="https://imagens.net.br/wp-content/uploads/2024/07/encante-se-gifs-de-ursinho-para-derreter-seu-coracao-0.gif" >
+        <h2>Meu amor me aceita como presente?</h2>
+       
+        <a href="https://youtu.be/P-lxOj0XpEE?si=A02KHA75n0P9EDOP&t=100" target="_blank"><button id="sim">Sim </button></a>
+        <button onmouseover="fuja()" id="nao">Não </button>
+       
+    </div>
+    <script>
+        function fuja(){
+            var botaonao = document.getElementById("nao")
+
+            var largurajanela = window.innerWidth;
+            var alturajanela = window.innerHeight;
+
+            var maxX = largurajanela - botaonao.offsetWidth;
+            var maxY = alturajanela - botaonao.offsetHeight;
+
+            var aleatorioX = Math.floor(Math.random() * maxX);
+            var aleatorioY = Math.floor(Math.random() * maxY);
+
+            botaonao.style.left = aleatorioX + "px";
+            botaonao.style.top = aleatorioY + "px";
+        }
+    </script>
+    
+</body>
+</html>

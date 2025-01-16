@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Amor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #ffe0e0;
+            color: #e60000;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        
+        h1 {
+            font-size: 3em;
+            margin-top: 50px;
+            color: #ff4d4d;
+        }
+
+        .question-container {
+            margin-top: 40px;
+            background-color: #fff0f5;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .question-container h2 {
+            font-size: 1.8em;
+            color: #ff66b2;
+        }
+
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+
+        .options li {
+            margin: 15px 0;
+        }
+
+        button {
+            background-color: #ff4d4d;
+            color: white;
+            font-size: 1.2em;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #e60000;
+        }
+
+        .result {
+            margin-top: 30px;
+            font-size: 1.5em;
+            color: #e60000;
+        }
+
+        .restart-button {
+            background-color: #66cc66;
+            margin-top: 20px;
+        }
+
+        .restart-button:hover {
+            background-color: #45a645;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Jogo de Amor</h1>
+
+    <div class="question-container" id="question-container">
+        <h2>Qual é a flor símbolo do amor?</h2>
+        <ul class="options">
+            <li><button class="option" data-correct="false">Margarida</button></li>
+            <li><button class="option" data-correct="true">Rosa</button></li>
+            <li><button class="option" data-correct="false">Girassol</button></li>
+            <li><button class="option" data-correct="false">Tulipa</button></li>
+        </ul>
+    </div>
+
+    <div class="result" id="result"></div>
+    
+    <button class="restart-button" id="restart-button" style="display:none;">Jogar Novamente</button>
+
+    <script>
+        let currentQuestion = 0;
+        let score = 0;
+
+        const questions = [
+            {
+                question: "Qual é a flor símbolo do amor?",
+                options: [
+                    { text: "Margarida", correct: false },
+                    { text: "Rosa", correct: true },
+                    { text: "Girassol", correct: false },
+                    { text: "Tulipa", correct: false }
+                ]
+            },
+            {
+                question: "Qual é o nome do autor de 'Romeu e Julieta'?",
+                options: [
+                    { text: "William Shakespeare", correct: true },
+                    { text: "Charles Dickens", correct: false },
+                    { text: "Jane Austen", correct: false },
+                    { text: "Homer", correct: false }
+                ]
+            },
+            {
+                question: "Qual é o principal símbolo do dia dos namorados?",
+                options: [
+                    { text: "Coração", correct: true },
+                    { text: "Estrela", correct: false },
+                    { text: "Lua", correct: false },
+                    { text: "Pomba", correct: false }
+                ]
+            }
+        ];
+
+        const questionContainer = document.getElementById("question-container");
+        const resultContainer = document.getElementById("result");
+        const restartButton = document.getElementById("restart-button");
+
+        function loadQuestion() {
+            const question = questions[currentQuestion];
+            questionContainer.querySelector("h2").textContent = question.question;
+            const options = questionContainer.querySelector(".options");
+            options.innerHTML = "";
+
+            question.options.forEach(option => {
+                const li = document.createElement("li");
+                const button = document.createElement("button");
+                button.textContent = option.text;
+                button.classList.add("option");
+                button.dataset.correct = option.correct;
+                button.addEventListener("click", handleAnswer);
+                li.appendChild(button);
+                options.appendChild(li);
+            });
+        }
+
+        function handleAnswer(event) {
+            const button = event.target;
+            const isCorrect = button.dataset.correct === "true";
+            if (isCorrect) {
+                score++;
+            }
+            currentQuestion++;
+
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            questionContainer.style.display = "none";
+            resultContainer.textContent = `Você acertou ${score} de ${questions.length} perguntas!`;
+            restartButton.style.display = "block";
+        }
+
+        restartButton.addEventListener("click", () => {
+            currentQuestion = 0;
+            score = 0;
+            questionContainer.style.display = "block";
+            restartButton.style.display = "none";
+            resultContainer.textContent = "";
+            loadQuestion();
+        });
+
+        loadQuestion();
+    </script>
+
+</body>
+</html>
