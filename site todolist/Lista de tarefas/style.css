@@ -1,0 +1,205 @@
+
+/* Corpo da página */
+*{
+    font-family: 'League Spartan', serif;
+}
+
+body {
+    font-family: 'League Spartan', serif;
+    margin: 0;
+    padding: 0;
+    background: url(img/wallpaper.webp) no-repeat center center fixed;
+    /* Imagem de fundo */
+    background-size: cover;
+    color: #ffffff;
+    /* Texto em branco para contraste */
+    line-height: 1.6;
+}
+
+/* Container principal */
+.container {
+    text-align: center;
+    margin: 50px auto;
+    padding: 20px;
+    width: 80%;
+    max-width: 600px;
+    background: transparent;
+    /* Fundo translúcido */
+    box-shadow: 0 0 15px rgba(0, 0, 0, .2);
+    /* Sombra suave */
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    /* Efeito de vidro */
+    border: 2px solid rgba(255, 255, 255, .2);
+    /* Borda sutil */
+    position: relative;
+    overflow: hidden;
+    /* Para evitar que as gotas saiam do container */
+}
+
+/* Gotas de água escorrendo */
+.container::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    left: 0;
+    width: 100%;
+    height: 400px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="400" viewBox="0 0 200 400"><circle cx="50" cy="50" r="5" fill="rgba(255, 255, 255, 0.3)" /><circle cx="100" cy="120" r="8" fill="rgba(255, 255, 255, 0.3)" /><circle cx="80" cy="250" r="6" fill="rgba(255, 255, 255, 0.3)" /><circle cx="150" cy="300" r="4" fill="rgba(255, 255, 255, 0.3)" /></svg>');
+    animation: gotas 10s infinite linear;
+    pointer-events: none;
+    /* Não interfere no clique */
+}
+
+@keyframes gotas {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(400px);
+    }
+}
+
+/* Título */
+h1 {
+    color: #141414;
+    font-weight: 600;
+    /* Branco puro para contraste */
+    margin-bottom: 20px;
+    font-size: 35px;
+    font-weight: bold;
+    text-shadow: 0px 0px 4px rgba(48, 48, 48, 0.7);
+    /* Sombra no texto */
+}
+
+/* Grupo de entrada (caixa de texto e botão) */
+.input-group {
+    display: flex;
+    /* Organiza os elementos em linha */
+    align-items: center;
+    /* Alinha verticalmente */
+    justify-content: center;
+    /* Centraliza no container */
+    margin-bottom: 20px;
+    /* Espaço abaixo do grupo */
+}
+
+input[type="text"] {
+    flex: 1;
+    /* Faz a caixa de entrada ocupar o espaço disponível */
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 5px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 1em;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: black;
+    
+    margin-right: 10px;
+    /* Espaço entre a caixa de entrada e o botão */
+    
+}
+
+input[type="text"]:focus {
+    border-color: #00a04b;
+    /* Verde pastel */
+    outline: none;
+    box-shadow: 0 0 5px #00a04b;
+}
+
+/* Botão geral add */
+button {
+    background-color: #141414;
+    font-weight: 500;
+    /* Verde pastel */
+    color: #ffffff;
+    border: 1px solid transparent;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #242424;
+;
+
+    /* Verde mais escuro no hover */
+}
+#adicionarTarefa:hover{
+    border-color: #00a04b;
+    box-shadow: 0 0 5px #00a04b;
+
+}
+
+
+/* Lista */
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.2);
+    /* Fundo translúcido suave */
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: transform 0.2s ease-in-out;
+    color: #000000;
+    font-weight: 500;
+    /* Contraste para o texto */
+}
+
+li:hover {
+    transform: scale(1.02);
+    /* Leve aumento no hover */
+}
+
+/* Botão apagar delete*/
+.apagarTarefa {
+    background-color: #ffffff;
+    /* Vermelho pastel */
+    color: #000000;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+}
+
+.apagarTarefa:hover {
+    background-color: #575757;
+    color: white;
+    border-color: #ff0000;
+    box-shadow: 0 0 7px #ff0000;
+    /* Vermelho mais escuro no hover */
+}
+
+/* Botão Editar*/
+.editarTarefa {
+    background-color: #ffffff; /* Amarelo */
+    color: #000000;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+    margin-right: 5px;
+}
+
+.editarTarefa:hover {
+    background-color: #575757;
+    color: white;
+    border-color: #fbff00 ;
+    box-shadow: 0 0 7px #fbff00;
+}
